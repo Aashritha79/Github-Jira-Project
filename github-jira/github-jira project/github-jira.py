@@ -50,14 +50,17 @@ def createJira():
     "update": {}
     } )
 
-
-    response = requests.request(
-        "POST",
-        url,
-        data=payload,
-        headers=headers,
-        auth=auth
-    )
+    if body == "/jira":
+        
+        response = requests.request(
+            "POST",
+            url,
+            data=payload,
+            headers=headers,
+            auth=auth
+        )
+    else: 
+        return "comment should be only /jira"
 
     return json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
 
