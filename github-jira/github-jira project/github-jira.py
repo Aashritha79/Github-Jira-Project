@@ -4,6 +4,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
@@ -12,9 +13,9 @@ def createJira():
 
     url = "https://aashrithadodda79.atlassian.net//rest/api/3/issue"
 
-    API_TOKEN=""
+    token = os.getenv("API_TOKEN")
 
-    auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", API_TOKEN)
+    auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", token)
 
     headers = {
         "Accept": "application/json",
@@ -44,7 +45,7 @@ def createJira():
         "issuetype": {
             "id": "10003"
         },
-        "summary": "Main order flow broken",
+        "summary": "This would be my test ticket for /jira",
     },
     "update": {}
     } )
@@ -59,7 +60,7 @@ def createJira():
             auth=auth
         )
     else: 
-        return "comment should be only /jira"
+        return "comment should only be /jira"
 
     return json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
 
