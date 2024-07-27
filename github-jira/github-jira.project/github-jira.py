@@ -1,64 +1,65 @@
-# This code sample uses the 'requests' library:
-# http://docs.python-requests.org
 import requests
 from requests.auth import HTTPBasicAuth
 import json
-from flask import Flask
+import os
+from flask import Flask, request
 
 app = Flask(__name__)
 
 @app.route('/createJira', methods=['POST'])
 def createJira():
-
     url = "https://aashrithadodda79.atlassian.net/rest/api/3/issue"
-
-    API_TOKEN="ATATT3xFfGF0qD200gqlwpSovi27yjdvnLB65dhUz3M4hVsmKprcuCev1N00b96C0sgG237zVK2-GTMg3QwOwVMslQSvHAuPzlqiFsy-zs63G8njMJA4ZcdMy9zKCP7xjiwEFYKPhl3LH_238hRU8KTltrOstcKRqZ7DdVfBZmWtrHi8HtGSaYc=C4DB99E5"
-
-    auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", API_TOKEN)
-
+    token = os.getenv(API_TOKEN")
+    
+    auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", token)
+    
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json"
     }
 
-    payload = json.dumps( {
+    payload = {
         "fields": {
-        "description": {
-            "content": [
-                {
-                    "content": [
-                        {
-                            "text": "Order entry fails when selecting supplier.",
-                            "type": "text"
-                        }
-                    ],
-                    "type": "paragraph"
+            "description": {
+                "content": [
+                    {
+                        "content": [
+                            {
+                                "text": "My first jira ticket",
+                                "type": "text"
+                            }
+                        ],
+                        "type": "paragraph"
                     }
                 ],
-            "type": "doc",
-             "version": 1
+                "type": "doc",
+                "version": 1
+            },
+            "project": {
+                "key": "GJP"
+            },
+            "issuetype": {
+                "id": "10003"  # Replace with your issue type ID
+            },
+            "summary": "Second JIRA Ticket",
         },
-        "project": {
-           "key": "GJP"
-        },
-        "issuetype": {
-            "id": "10003"
-        },
-        "summary": "Main order flow broken",
-    },
-    "update": {}
-    } )
+        "update": {}
+    }
 
+    webhook = request.json
 
-    response = requests.request(
-        "POST",
-        url,
-        data=payload,
-        headers=headers,
-        auth=auth
-    )
+    response = None
 
-    return json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
+    if webhook.get('comment') and webhook['comment'].get('body') == "/jira":
+        response = requests.post(
+            url,
+            data=json.dumps(payload),
+            headers=headers,
+            auth=auth
+        )
+        return json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
+    else:
+        return json.dumps({"status": "no action taken", "message": "Comment does not include /jira"}, sort_keys=True, indent=4, separators=(",", ": "))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
