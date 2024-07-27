@@ -1,12 +1,13 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+import os
 
 url = "https://aashrithadodda79.atlassian.net/rest/api/3/issue"
 
-API_TOKEN = ""
+token = os.getenv("API_TOKEN")
 
-auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", API_TOKEN)
+auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", token)
 
 headers = {
   "Accept": "application/json",
@@ -36,7 +37,7 @@ payload = json.dumps( {
     "issuetype": {
       "id": "10003"
     },
-    "summary": "First JIRA Ticket",
+    "summary": "Second JIRA Ticket",
   },
   "update": {}
 } )
