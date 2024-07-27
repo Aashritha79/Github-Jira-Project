@@ -37,7 +37,7 @@ payload = json.dumps( {
     "issuetype": {
       "id": "10003"
     },
-    "summary": "Sixth JIRA Ticket",
+    "summary": "Second JIRA Ticket",
   },
   "update": {}
 } )
