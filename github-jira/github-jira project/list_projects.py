@@ -2,12 +2,13 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+import os
 
 url = "https://aashrithadodda79.atlassian.net/rest/api/3/project"
 
-API_TOKEN=""
+token = os.getenv("API_TOKEN")
 
-auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", API_TOKEN)
+auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", token)
 
 headers = {
   "Accept": "application/json"
@@ -20,8 +21,12 @@ response = requests.request(
    auth=auth
 )
 
-output = json.loads(response.text)
+print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
 
-name = output[0]["name"]
+# output = json.loads(response.text)
 
-print(name)
+# name = output[0]["name"]
+
+# print(name)
+
+
