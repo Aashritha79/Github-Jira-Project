@@ -39,7 +39,7 @@ def createJira():
                 "key": "GJP"
             },
             "issuetype": {
-                "id": "10003"  # Replace with your issue type ID
+                "id": "10003" 
             },
             "summary": "Second JIRA Ticket",
         },
