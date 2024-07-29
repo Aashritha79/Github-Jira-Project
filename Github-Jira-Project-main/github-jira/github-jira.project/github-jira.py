@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/createJira', methods=['POST'])
 def createJira():
     url = "https://aashrithadodda79.atlassian.net/rest/api/3/issue"
-    token = os.getenv(API_TOKEN")
+    token = os.getenv("API_TOKEN")
     
     auth = HTTPBasicAuth("aashritha.dodda79@gmail.com", token)
     
